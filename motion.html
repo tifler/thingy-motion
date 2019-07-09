@@ -11,6 +11,58 @@
     <button id='startNotifications' disabled>Start Notification</button>
     <button id='stopNotifications' disabled>Stop Notification</button>
     <button id='reset' disabled>Reset</button>
+    <br/>
+
+    <table>
+        <tr>
+            <td>
+                Step Counter Interval
+            </td>
+            <td>
+                <input type=text id='stepCntItv'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Temperature Compensation Interval
+            </td>
+            <td>
+                <input type=text id='tempCompItv'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Magnetometer Compensation Interval
+            </td>
+            <td>
+                <input type=text id='magCompItv'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Motion Processing Unit Frequency
+            </td>
+            <td>
+                <input type=text id='motProcFreq'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Wake on Motion
+            </td>
+            <td>
+                <input type=text id='wakeOnMotion'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Apply changes
+            </td>
+            <td>
+                <button id='applyChange'>Apply changes</button>
+            </td>
+        </tr>
+    </table>
     <table>
         <tr>
             <td></td>
@@ -29,6 +81,9 @@
             <td>
                 <input type=text id='az'/>
             </td>
+            <td>
+                <input type=text id='afps'/>
+            </td>
         </tr>
         <tr>
             <td>Gyro</td>
@@ -41,6 +96,9 @@
             <td>
                 <input type=text id='gz'/>
             </td>
+            <td>
+                <input type=text id='gfps'/>
+            </td>            
         </tr>
         <tr>
             <td>Compass</td>
@@ -52,6 +110,9 @@
             </td>
             <td>
                 <input type=text id='cz'/>
+            </td>
+            <td>
+                <input type=text id='cfps'/>
             </td>
         </tr>
         <tr>
@@ -65,14 +126,9 @@
             <td>
                 <input type=text id='vz'/>
             </td>
-        </tr>
-        <tr>
-            <td>FPS</td>
             <td>
-                <input type=text id='fps'/>
+                <input type=text id='vfps'/>
             </td>
-            <td></td>
-            <td></td>
         </tr>
     </table>
 
@@ -94,8 +150,8 @@
 
     <script>
         // Int 2^6 => -2^5 ~ 2^5
-        var max = 5;
-        var min = -5;
+        var max = 32;
+        var min = -32;
         var gax = new SmoothieChart({maxValue: max, minValue: min});
         var gay = new SmoothieChart({maxValue: max, minValue: min});
         var gaz = new SmoothieChart({maxValue: max, minValue: min});
@@ -218,6 +274,12 @@
             if (isWebBluetoothEnabled()) {
                 // ChromeSamples.clearLog();
                 onResetButtonClick();
+            }
+        });
+
+        document.querySelector('#applyChange').addEventListener('click', function(event) {
+            if (isWebBluetoothEnabled()) {
+                onApplyButtonClick();
             }
         });
     </script>
