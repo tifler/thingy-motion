@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<head>
+    <title>Thingy - Motion Sensor Monitor</title>
+    <script type='text/javascript' src='js/motion.js'></script>
+    <script type='text/javascript' src='js/smoothie.js'></script>
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+</head>
+
+<body>
+    <button id='connectMotion'>Connect Motion RAW</button>
+    <button id='startNotifications' disabled>Start Notification</button>
+    <button id='stopNotifications' disabled>Stop Notification</button>
+    <button id='reset' disabled>Reset</button>
+    <table>
+        <tr>
+            <td></td>
+            <td>X</td>
+            <td>Y</td>
+            <td>Z</td>
+        </tr>
+        <tr>
+            <td>Accel</td>
+            <td>
+                <input type=text id='ax'/>
+            </td>
+            <td>
+                <input type=text id='ay'/>
+            </td>
+            <td>
+                <input type=text id='az'/>
+            </td>
+        </tr>
+        <tr>
+            <td>Gyro</td>
+            <td>
+                <input type=text id='gx'/>
+            </td>
+            <td>
+                <input type=text id='gy'/>
+            </td>
+            <td>
+                <input type=text id='gz'/>
+            </td>
+        </tr>
+        <tr>
+            <td>Compass</td>
+            <td>
+                <input type=text id='cx'/>
+            </td>
+            <td>
+                <input type=text id='cy'/>
+            </td>
+            <td>
+                <input type=text id='cz'/>
+            </td>
+        </tr>
+        <tr>
+            <td>FPS</td>
+            <td>
+                <input type=text id='fps'/>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <canvas id="mycanvas" width="500" height="200"></canvas>
+    <script>
+        var smoothie = new SmoothieChart();
+        var lineAX = new TimeSeries();
+        var lineAY = new TimeSeries();
+        var lineAZ = new TimeSeries();
+
+        smoothie.streamTo(document.querySelector('#mycanvas'));
+
+        smoothie.addTimeSeries(lineAX);
+        smoothie.addTimeSeries(lineAY);
+        smoothie.addTimeSeries(lineAZ);
+
+        function appendAccelData(acc) {
+            var t = new Date().getTime();
+            lineAX.append(t, acc.x);
+            lineAY.append(t, acc.y);
+            lineAZ.append(t, acc.z);
+        }
+    </script>
+
+    <script>
+        document.querySelector('#connectMotion').addEventListener('click', function() {
+            if (isWebBluetoothEnabled()) {
+                onConnectMotion();
+            }
+        });
+
+        document.querySelector('#startNotifications').addEventListener('click', function(event) {
+            if (isWebBluetoothEnabled()) {
+                onStartNotificationsButtonClick();
+            }
+        });
+
+        document.querySelector('#stopNotifications').addEventListener('click', function(event) {
+            if (isWebBluetoothEnabled()) {
+                onStopNotificationsButtonClick();
+            }
+        });
+
+        document.querySelector('#reset').addEventListener('click', function(event) {
+            if (isWebBluetoothEnabled()) {
+                // ChromeSamples.clearLog();
+                onResetButtonClick();
+            }
+        });
+    </script>
+</body>
