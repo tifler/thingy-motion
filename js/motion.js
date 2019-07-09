@@ -72,7 +72,7 @@ function swap16(val) {
 }
 
 function cnvtEndian16(v, idx) {
-    v.setUint16(0, swap16(v.getUint16(0)));
+    v.setUint16(idx, swap16(v.getUint16(idx)));
     return v;
 }
 
@@ -127,6 +127,10 @@ function handleMotionRawValueChanged(event) {
 
     var accel = { x: ax, y: ay, z: az };
     appendAccelData(accel);
+    var gyro = { x: gx, y: gy, z: gz };
+    appendGyroData(gyro);
+    var compass = { x: cx, y: cy, z: cz };
+    appendCompassData(compass);
     frames += 1;
 }
 

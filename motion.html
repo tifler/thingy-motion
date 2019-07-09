@@ -64,18 +64,67 @@
         </tr>
     </table>
 
-    <canvas id="mycanvas" width="500" height="200"></canvas>
+    <canvas id="graphAX" width="400" height="100"></canvas>
+    <canvas id="graphAY" width="400" height="100"></canvas>
+    <canvas id="graphAZ" width="400" height="100"></canvas>
+
+    <canvas id="graphGX" width="400" height="100"></canvas>
+    <canvas id="graphGY" width="400" height="100"></canvas>
+    <canvas id="graphGZ" width="400" height="100"></canvas>
+
+    <canvas id="graphCX" width="400" height="100"></canvas>
+    <canvas id="graphCY" width="400" height="100"></canvas>
+    <canvas id="graphCZ" width="400" height="100"></canvas>
+
     <script>
-        var smoothie = new SmoothieChart();
+        // Int 2^6 => -2^5 ~ 2^5
+        var gax = new SmoothieChart({maxValue: 32, minValue: -32});
+        var gay = new SmoothieChart({maxValue: 32, minValue: -32});
+        var gaz = new SmoothieChart({maxValue: 32, minValue: -32});
+        // Int 2^11 => -2^10 ~ 2^10
+        var ggx = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var ggy = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var ggz = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        // Int 2^12 => -2^11 ~ 2^11
+        var cgx = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var cgy = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var cgz = new SmoothieChart({maxValue: 1024, minValue: -1024})
+
         var lineAX = new TimeSeries();
         var lineAY = new TimeSeries();
         var lineAZ = new TimeSeries();
 
-        smoothie.streamTo(document.querySelector('#mycanvas'));
+        var lineGX = new TimeSeries();
+        var lineGY = new TimeSeries();
+        var lineGZ = new TimeSeries();
 
-        smoothie.addTimeSeries(lineAX);
-        smoothie.addTimeSeries(lineAY);
-        smoothie.addTimeSeries(lineAZ);
+        var lineCX = new TimeSeries();
+        var lineCY = new TimeSeries();
+        var lineCZ = new TimeSeries();
+
+        gax.streamTo(document.querySelector('#graphAX'));
+        gay.streamTo(document.querySelector('#graphAY'));
+        gaz.streamTo(document.querySelector('#graphAZ'));
+
+        ggx.streamTo(document.querySelector('#graphGX'));
+        ggy.streamTo(document.querySelector('#graphGY'));
+        ggz.streamTo(document.querySelector('#graphGZ'));
+
+        cgx.streamTo(document.querySelector('#graphCX'));
+        cgy.streamTo(document.querySelector('#graphCY'));
+        cgz.streamTo(document.querySelector('#graphCZ'));
+
+        gax.addTimeSeries(lineAX, {lineWidth:2,strokeStyle:'#00ff00'});
+        gay.addTimeSeries(lineAY, {lineWidth:2,strokeStyle:'#0000ff'});
+        gaz.addTimeSeries(lineAZ, {lineWidth:2,strokeStyle:'#ff0000'});
+
+        ggx.addTimeSeries(lineGX, {lineWidth:2,strokeStyle:'#00ff00'});
+        ggy.addTimeSeries(lineGY, {lineWidth:2,strokeStyle:'#0000ff'});
+        ggz.addTimeSeries(lineGZ, {lineWidth:2,strokeStyle:'#ff0000'});
+
+        cgx.addTimeSeries(lineCX, {lineWidth:2,strokeStyle:'#00ff00'});
+        cgy.addTimeSeries(lineCY, {lineWidth:2,strokeStyle:'#0000ff'});
+        cgz.addTimeSeries(lineCZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
         function appendAccelData(acc) {
             var t = new Date().getTime();
@@ -83,6 +132,19 @@
             lineAY.append(t, acc.y);
             lineAZ.append(t, acc.z);
         }
+        function appendGyroData(gyro) {
+            var t = new Date().getTime();
+            lineGX.append(t, gyro.x);
+            lineGY.append(t, gyro.y);
+            lineGZ.append(t, gyro.z);
+        }
+        function appendCompassData(compass) {
+            var t = new Date().getTime();
+            lineCX.append(t, compass.x);
+            lineCY.append(t, compass.y);
+            lineCZ.append(t, compass.z);
+        }
+
     </script>
 
     <script>
