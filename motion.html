@@ -94,21 +94,31 @@
 
     <script>
         // Int 2^6 => -2^5 ~ 2^5
-        var gax = new SmoothieChart({maxValue: 32, minValue: -32});
-        var gay = new SmoothieChart({maxValue: 32, minValue: -32});
-        var gaz = new SmoothieChart({maxValue: 32, minValue: -32});
+        var max = 5;
+        var min = -5;
+        var gax = new SmoothieChart({maxValue: max, minValue: min});
+        var gay = new SmoothieChart({maxValue: max, minValue: min});
+        var gaz = new SmoothieChart({maxValue: max, minValue: min});
+        
         // Int 2^11 => -2^10 ~ 2^10
-        var ggx = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var ggy = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var ggz = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        // Int 2^12 => -2^11 ~ 2^11
-        var cgx = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var cgy = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var cgz = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        max = 1024;
+        min = -1024;
+        var ggx = new SmoothieChart({maxValue: max, minValue: min})
+        var ggy = new SmoothieChart({maxValue: max, minValue: min})
+        var ggz = new SmoothieChart({maxValue: max, minValue: min})
 
-        var vgx = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var vgy = new SmoothieChart({maxValue: 1024, minValue: -1024})
-        var vgz = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        // Int 2^12 => -2^11 ~ 2^11
+        max = 2048;
+        min = -2048;
+        var cgx = new SmoothieChart({maxValue: max, minValue: min})
+        var cgy = new SmoothieChart({maxValue: max, minValue: min})
+        var cgz = new SmoothieChart({maxValue: max, minValue: min})
+
+        max = 10;
+        min = -10;
+        var vgx = new SmoothieChart({maxValue: max, minValue: min})
+        var vgy = new SmoothieChart({maxValue: max, minValue: min})
+        var vgz = new SmoothieChart({maxValue: max, minValue: min})
 
         var lineAX = new TimeSeries();
         var lineAY = new TimeSeries();

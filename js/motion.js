@@ -11,25 +11,22 @@ function log(msg) {
   console.log(msg);
 }
 
-function swap32(src) {
-  return (
-    ((src & 0xff000000) >> 24) |
-    ((src & 0x00ff0000) >> 8) |
-    ((src & 0x0000ff00) << 8) |
-    ((src & 0x000000ff) << 24)
-  );
+function swap16(val) {
+  return ((val & 0xFF) << 8) | ((val >> 8) & 0xFF);
+}
+
+function swap32(val) {
+    return ((val & 0xFF) << 24)
+           | ((val & 0xFF00) << 8)
+           | ((val >> 8) & 0xFF00)
+           | ((val >> 24) & 0xFF);
 }
 
 function cnvtEndian32(v, idx) {
+  // console.log('+ ' + v.getUint32(idx).toString(16));
   v.setUint32(idx, swap32(v.getUint32(idx)));
+  // console.log('- ' + v.getUint32(idx).toString(16));
   return v;
-}
-
-function swap16(src) {
-  return (
-    ((src & 0xff00) >> 8) |
-    ((src & 0x00ff) << 8)
-  );
 }
 
 function cnvtEndian16(v, idx) {
@@ -51,22 +48,24 @@ function onGravityVectorChanged(event) {
   var v = event.target.value;
   var vector = {};
 
-  // vector.x = cnvtEndian32(v, 0).getFloat32(0);
-  // vector.y = cnvtEndian32(v, 4).getFloat32(4);
-  // vector.z = cnvtEndian32(v, 8).getFloat32(8);
+  vector.x = cnvtEndian32(v, 0).getFloat32(0);
+  vector.y = cnvtEndian32(v, 4).getFloat32(4);
+  vector.z = cnvtEndian32(v, 8).getFloat32(8);
 
   // vector.x = cnvtEndian32(v, 0).getUint32(0).toString(16);
   // vector.y = cnvtEndian32(v, 4).getUint32(4).toString(16);
   // vector.z = cnvtEndian32(v, 8).getUint32(8).toString(16);
 
 
-  vector.x = v.getFloat32(0);
-  vector.y = v.getFloat32(4);
-  vector.z = v.getFloat32(8);
+  // vector.x = v.getFloat32(0);
+  // vector.y = v.getFloat32(4);
+  // vector.z = v.getFloat32(8);
 
   document.querySelector('#vx').value = vector.x;
   document.querySelector('#vy').value = vector.y;
   document.querySelector('#vz').value = vector.z;
+
+  // log(vector);
 
   appendGravityVectorData(vector);
 }
@@ -160,6 +159,14 @@ function connectDeviceAndCacheCharacteristics() {
 function toFixedPoint(v, d) {
     var mask = (1 << d) - 1;
     return (v >> d).toString(10) + '.' + (v & mask).toString(10);
+
+    // var str = (v >> d).toString(10) + '.' + (v & mask).toString(10);
+    // var val = parseFloat(str);
+    // if (val < 0.0)
+    //   str = '-' + (0 - val).toString(10);
+    // else
+    //   str = '+' + val.toString(10);
+    // return str;
 }
 
 /* This function will be called when `readValue` resolves and
@@ -282,5 +289,3 @@ function isWebBluetoothEnabled() {
     return false;
   }
 }
-
-
