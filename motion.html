@@ -55,6 +55,18 @@
             </td>
         </tr>
         <tr>
+            <td>Gravity Vector</td>
+            <td>
+                <input type=text id='vx'/>
+            </td>
+            <td>
+                <input type=text id='vy'/>
+            </td>
+            <td>
+                <input type=text id='vz'/>
+            </td>
+        </tr>
+        <tr>
             <td>FPS</td>
             <td>
                 <input type=text id='fps'/>
@@ -76,6 +88,10 @@
     <canvas id="graphCY" width="400" height="100"></canvas>
     <canvas id="graphCZ" width="400" height="100"></canvas>
 
+    <canvas id="graphVX" width="400" height="100"></canvas>
+    <canvas id="graphVY" width="400" height="100"></canvas>
+    <canvas id="graphVZ" width="400" height="100"></canvas>
+
     <script>
         // Int 2^6 => -2^5 ~ 2^5
         var gax = new SmoothieChart({maxValue: 32, minValue: -32});
@@ -90,6 +106,10 @@
         var cgy = new SmoothieChart({maxValue: 1024, minValue: -1024})
         var cgz = new SmoothieChart({maxValue: 1024, minValue: -1024})
 
+        var vgx = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var vgy = new SmoothieChart({maxValue: 1024, minValue: -1024})
+        var vgz = new SmoothieChart({maxValue: 1024, minValue: -1024})
+
         var lineAX = new TimeSeries();
         var lineAY = new TimeSeries();
         var lineAZ = new TimeSeries();
@@ -101,6 +121,10 @@
         var lineCX = new TimeSeries();
         var lineCY = new TimeSeries();
         var lineCZ = new TimeSeries();
+
+        var lineVX = new TimeSeries();
+        var lineVY = new TimeSeries();
+        var lineVZ = new TimeSeries();
 
         gax.streamTo(document.querySelector('#graphAX'));
         gay.streamTo(document.querySelector('#graphAY'));
@@ -114,6 +138,10 @@
         cgy.streamTo(document.querySelector('#graphCY'));
         cgz.streamTo(document.querySelector('#graphCZ'));
 
+        vgx.streamTo(document.querySelector('#graphVX'));
+        vgy.streamTo(document.querySelector('#graphVY'));
+        vgz.streamTo(document.querySelector('#graphVZ'));
+
         gax.addTimeSeries(lineAX, {lineWidth:2,strokeStyle:'#00ff00'});
         gay.addTimeSeries(lineAY, {lineWidth:2,strokeStyle:'#0000ff'});
         gaz.addTimeSeries(lineAZ, {lineWidth:2,strokeStyle:'#ff0000'});
@@ -125,6 +153,10 @@
         cgx.addTimeSeries(lineCX, {lineWidth:2,strokeStyle:'#00ff00'});
         cgy.addTimeSeries(lineCY, {lineWidth:2,strokeStyle:'#0000ff'});
         cgz.addTimeSeries(lineCZ, {lineWidth:2,strokeStyle:'#ff0000'});
+
+        vgx.addTimeSeries(lineVX, {lineWidth:2,strokeStyle:'#00ff00'});
+        vgy.addTimeSeries(lineVY, {lineWidth:2,strokeStyle:'#0000ff'});
+        vgz.addTimeSeries(lineVZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
         function appendAccelData(acc) {
             var t = new Date().getTime();
@@ -145,6 +177,12 @@
             lineCZ.append(t, compass.z);
         }
 
+        function appendGravityVectorData(gravity) {
+            var t = new Date().getTime();
+            lineVX.append(t, gravity.x);
+            lineVY.append(t, gravity.y);
+            lineVZ.append(t, gravity.z);
+        }
     </script>
 
     <script>
