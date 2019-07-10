@@ -8,6 +8,7 @@ const configCharUUID = 'ef680401-9b35-4933-9b10-52ffa9740042';
 
 var config = {};
 var frames = {};
+var interval = null;
 
 function log(msg) {
     // console.log(msg);
@@ -151,9 +152,8 @@ function setupNotification() {
         document.querySelector('#connectMotion').disabled = true;
         document.querySelector('#startNotifications').disabled = false;
         document.querySelector('#stopNotifications').disabled = true;
-        document.querySelector('#reset').disabled = false;
         document.querySelector('#disconnect').disabled = false;
-        setInterval(fpsUpdate, 1000);
+        interval = setInterval(fpsUpdate, 1000);
         onStartNotificationsButtonClick();
     });
 }
@@ -176,33 +176,6 @@ function fpsUpdate() {
     document.querySelector('#cfps').value = frames.c;
     document.querySelector('#vfps').value = frames.v;
     frames.a = frames.g = frames.c = frames.v = 0;
-}
-
-function connectDeviceAndCacheCharacteristics() {
-    if (bluetoothDevice.gatt.connected && motionRawChar) {
-        return Promise.resolve();
-    }
-
-    log('Connecting to GATT Server...');
-    return bluetoothDevice.gatt.connect()
-    .then(server => {
-        log('Getting Motion Service...');
-        return server.getPrimaryService(serviceUUID);
-    })
-    .then(service => {
-        log('Getting Motion RAW Characteristic...');
-        return service.getCharacteristic(motionRawCharUUID);
-    })
-    .then(characteristic => {
-        motionRawChar = characteristic;
-        motionRawChar.addEventListener('characteristicvaluechanged', onMotionRawValueChanged);
-        document.querySelector('#connectMotion').disabled = true;
-        document.querySelector('#startNotifications').disabled = false;
-        document.querySelector('#stopNotifications').disabled = true;
-        document.querySelector('#reset').disabled = false;
-        setInterval(fpsUpdate, 1000);
-        onStartNotificationsButtonClick();
-    });
 }
 
 /*
@@ -311,20 +284,6 @@ function onStopNotificationsButtonClick() {
     });
 }
 
-function onResetButtonClick() {
-    if (motionRawChar) {
-        motionRawChar.removeEventListener('characteristicvaluechanged', onMotionRawValueChanged);
-        motionRawChar = null;
-    }
-    if (gravityVectorChar) {
-        gravityVectorChar.removeEventListener('characteristicvaluechanged', onGravityVectorChanged);
-        gravityVectorChar = null;
-    }
-    // Note that it doesn't disconnect device.
-    bluetoothDevice = null;
-    log('> Bluetooth Device reset');
-}
-
 function onDisconnectButtonClick() {
     log('Disconnecting device...');
     bluetoothDevice.gatt.disconnect();
@@ -335,12 +294,13 @@ function onDisconnected() {
     document.querySelector('#connectMotion').disabled = false;
     document.querySelector('#startNotifications').disabled = true;
     document.querySelector('#stopNotifications').disabled = true;
-    document.querySelector('#reset').disabled = true;
     document.querySelector('#disconnect').disabled = true;
 
     motionRawChar = null;
     gravityVectorChar = null;
     bluetoothDevice = null;
+    clearInterval(interval);
+    interval = null;
 }
 
 function isWebBluetoothEnabled() {
@@ -396,13 +356,6 @@ function initialize() {
     document.querySelector('#stopNotifications').addEventListener('click', function(event) {
         if (isWebBluetoothEnabled()) {
             onStopNotificationsButtonClick();
-        }
-    });
-
-    document.querySelector('#reset').addEventListener('click', function(event) {
-        if (isWebBluetoothEnabled()) {
-            // ChromeSamples.clearLog();
-            onResetButtonClick();
         }
     });
 

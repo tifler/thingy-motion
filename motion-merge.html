@@ -141,27 +141,19 @@
         </div>
 
         <div class='graphHolder'>
-            <canvas id="graphAX" width="400" height="100"></canvas>
-            <canvas id="graphAY" width="400" height="100"></canvas>
-            <canvas id="graphAZ" width="400" height="100"></canvas>
+            <canvas id="graphA" width="700" height="150"></canvas>
         </div>
 
         <div class='graphHolder'>
-            <canvas id="graphGX" width="400" height="100"></canvas>
-            <canvas id="graphGY" width="400" height="100"></canvas>
-            <canvas id="graphGZ" width="400" height="100"></canvas>
+            <canvas id="graphG" width="700" height="150"></canvas>
         </div>
 
         <div class='graphHolder'>
-            <canvas id="graphCX" width="400" height="100"></canvas>
-            <canvas id="graphCY" width="400" height="100"></canvas>
-            <canvas id="graphCZ" width="400" height="100"></canvas>
+            <canvas id="graphC" width="700" height="150"></canvas>
         </div>
 
         <div class='graphHolder'>
-            <canvas id="graphVX" width="400" height="100"></canvas>
-            <canvas id="graphVY" width="400" height="100"></canvas>
-            <canvas id="graphVZ" width="400" height="100"></canvas>
+            <canvas id="graphV" width="700" height="150"></canvas>
         </div>
 
     </div>
@@ -187,29 +179,21 @@
         // Int 2^6 => -2^5 ~ 2^5
         var max = 32;
         var min = -32;
-        var gax = new SmoothieChart({maxValue: max, minValue: min});
-        var gay = new SmoothieChart({maxValue: max, minValue: min});
-        var gaz = new SmoothieChart({maxValue: max, minValue: min});
+        var ga = new SmoothieChart({maxValue: max, minValue: min});
         
         // Int 2^11 => -2^10 ~ 2^10
         max = 1024;
         min = -1024;
-        var ggx = new SmoothieChart({maxValue: max, minValue: min})
-        var ggy = new SmoothieChart({maxValue: max, minValue: min})
-        var ggz = new SmoothieChart({maxValue: max, minValue: min})
+        var gg = new SmoothieChart({maxValue: max, minValue: min})
 
         // Int 2^12 => -2^11 ~ 2^11
         max = 2048;
         min = -2048;
-        var cgx = new SmoothieChart({maxValue: max, minValue: min})
-        var cgy = new SmoothieChart({maxValue: max, minValue: min})
-        var cgz = new SmoothieChart({maxValue: max, minValue: min})
+        var cg = new SmoothieChart({maxValue: max, minValue: min})
 
         max = 10;
         min = -10;
-        var vgx = new SmoothieChart({maxValue: max, minValue: min})
-        var vgy = new SmoothieChart({maxValue: max, minValue: min})
-        var vgz = new SmoothieChart({maxValue: max, minValue: min})
+        var vg = new SmoothieChart({maxValue: max, minValue: min})
 
         var lineAX = new TimeSeries();
         var lineAY = new TimeSeries();
@@ -227,37 +211,26 @@
         var lineVY = new TimeSeries();
         var lineVZ = new TimeSeries();
 
-        gax.streamTo(document.querySelector('#graphAX'));
-        gay.streamTo(document.querySelector('#graphAY'));
-        gaz.streamTo(document.querySelector('#graphAZ'));
+        ga.streamTo(document.querySelector('#graphA'));
+        gg.streamTo(document.querySelector('#graphG'));
+        cg.streamTo(document.querySelector('#graphC'));
+        vg.streamTo(document.querySelector('#graphV'));
 
-        ggx.streamTo(document.querySelector('#graphGX'));
-        ggy.streamTo(document.querySelector('#graphGY'));
-        ggz.streamTo(document.querySelector('#graphGZ'));
+        ga.addTimeSeries(lineAX, {lineWidth:2,strokeStyle:'#00ff00'});
+        ga.addTimeSeries(lineAY, {lineWidth:2,strokeStyle:'#0000ff'});
+        ga.addTimeSeries(lineAZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
-        cgx.streamTo(document.querySelector('#graphCX'));
-        cgy.streamTo(document.querySelector('#graphCY'));
-        cgz.streamTo(document.querySelector('#graphCZ'));
+        gg.addTimeSeries(lineGX, {lineWidth:2,strokeStyle:'#00ff00'});
+        gg.addTimeSeries(lineGY, {lineWidth:2,strokeStyle:'#0000ff'});
+        gg.addTimeSeries(lineGZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
-        vgx.streamTo(document.querySelector('#graphVX'));
-        vgy.streamTo(document.querySelector('#graphVY'));
-        vgz.streamTo(document.querySelector('#graphVZ'));
+        cg.addTimeSeries(lineCX, {lineWidth:2,strokeStyle:'#00ff00'});
+        cg.addTimeSeries(lineCY, {lineWidth:2,strokeStyle:'#0000ff'});
+        cg.addTimeSeries(lineCZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
-        gax.addTimeSeries(lineAX, {lineWidth:2,strokeStyle:'#00ff00'});
-        gay.addTimeSeries(lineAY, {lineWidth:2,strokeStyle:'#0000ff'});
-        gaz.addTimeSeries(lineAZ, {lineWidth:2,strokeStyle:'#ff0000'});
-
-        ggx.addTimeSeries(lineGX, {lineWidth:2,strokeStyle:'#00ff00'});
-        ggy.addTimeSeries(lineGY, {lineWidth:2,strokeStyle:'#0000ff'});
-        ggz.addTimeSeries(lineGZ, {lineWidth:2,strokeStyle:'#ff0000'});
-
-        cgx.addTimeSeries(lineCX, {lineWidth:2,strokeStyle:'#00ff00'});
-        cgy.addTimeSeries(lineCY, {lineWidth:2,strokeStyle:'#0000ff'});
-        cgz.addTimeSeries(lineCZ, {lineWidth:2,strokeStyle:'#ff0000'});
-
-        vgx.addTimeSeries(lineVX, {lineWidth:2,strokeStyle:'#00ff00'});
-        vgy.addTimeSeries(lineVY, {lineWidth:2,strokeStyle:'#0000ff'});
-        vgz.addTimeSeries(lineVZ, {lineWidth:2,strokeStyle:'#ff0000'});
+        vg.addTimeSeries(lineVX, {lineWidth:2,strokeStyle:'#00ff00'});
+        vg.addTimeSeries(lineVY, {lineWidth:2,strokeStyle:'#0000ff'});
+        vg.addTimeSeries(lineVZ, {lineWidth:2,strokeStyle:'#ff0000'});
 
         function appendAccelData(acc) {
             var t = new Date().getTime();
