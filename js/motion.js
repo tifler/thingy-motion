@@ -10,7 +10,20 @@ var config = {};
 var frames = {};
 
 function log(msg) {
-    console.log(msg);
+    // console.log(msg);
+    var time = new Date().toISOString();
+    document.querySelector('#log').value += time + ': ' + msg + '\n';
+}
+
+function save(str) {
+    var id = parseInt(document.querySelector('#saveId').value);
+    str = id + ',' + str;
+    if (document.querySelector('#startSave').disabled == false) {
+        // log('Ignore: ' + str);
+        return;
+    }
+    var elem = document.querySelector('#data');
+    elem.value += str + '\n';
 }
 
 function swap16(val) {
@@ -139,6 +152,7 @@ function setupNotification() {
         document.querySelector('#startNotifications').disabled = false;
         document.querySelector('#stopNotifications').disabled = true;
         document.querySelector('#reset').disabled = false;
+        document.querySelector('#disconnect').disabled = false;
         setInterval(fpsUpdate, 1000);
         onStartNotificationsButtonClick();
     });
@@ -249,6 +263,10 @@ function onMotionRawValueChanged(event) {
     frames.a += 1;
     frames.g += 1;
     frames.c += 1;
+
+    save(accel.x.toString() + ',' + accel.y.toString() + ',' + accel.z.toString() +
+        gyro.x.toString() + ',' + gyro.y.toString() + ',' + gyro.z.toString() +
+        compass.x.toString() + ',' + compass.y.toString() + ',' + compass.z.toString());
 }
 
 function onStartNotificationsButtonClick() {
@@ -307,8 +325,22 @@ function onResetButtonClick() {
     log('> Bluetooth Device reset');
 }
 
+function onDisconnectButtonClick() {
+    log('Disconnecting device...');
+    bluetoothDevice.gatt.disconnect();
+}
+
 function onDisconnected() {
     log('> Bluetooth Device disconnected');
+    document.querySelector('#connectMotion').disabled = false;
+    document.querySelector('#startNotifications').disabled = true;
+    document.querySelector('#stopNotifications').disabled = true;
+    document.querySelector('#reset').disabled = true;
+    document.querySelector('#disconnect').disabled = true;
+
+    motionRawChar = null;
+    gravityVectorChar = null;
+    bluetoothDevice = null;
 }
 
 function isWebBluetoothEnabled() {
@@ -321,4 +353,93 @@ function isWebBluetoothEnabled() {
             'Please make sure the "Experimental Web Platform features" flag is enabled.');
         return false;
     }
+}
+
+function onStartSaveClick() {
+    document.querySelector('#startSave').disabled = true;
+    document.querySelector('#stopSave').disabled = false;
+}
+
+function onStopSaveClick() {
+    document.querySelector('#startSave').disabled = false;
+    document.querySelector('#stopSave').disabled = true;
+}
+
+function onClearSaveClick() {
+
+}
+
+function toggleSave() {
+    if (document.querySelector('#startSave').disabled == true) {
+        onStopSaveClick();
+        var value = parseInt(document.querySelector('#saveId').value) + 1;
+        document.querySelector('#saveId').value = value;
+    }
+    else {
+        onStartSaveClick();
+    }
+}
+
+function initialize() {
+    document.querySelector('#connectMotion').addEventListener('click', function() {
+        if (isWebBluetoothEnabled()) {
+            onConnectMotion();
+        }
+    });
+
+    document.querySelector('#startNotifications').addEventListener('click', function(event) {
+        if (isWebBluetoothEnabled()) {
+            onStartNotificationsButtonClick();
+        }
+    });
+
+    document.querySelector('#stopNotifications').addEventListener('click', function(event) {
+        if (isWebBluetoothEnabled()) {
+            onStopNotificationsButtonClick();
+        }
+    });
+
+    document.querySelector('#reset').addEventListener('click', function(event) {
+        if (isWebBluetoothEnabled()) {
+            // ChromeSamples.clearLog();
+            onResetButtonClick();
+        }
+    });
+
+    document.querySelector('#applyChange').addEventListener('click', function(event) {
+        if (isWebBluetoothEnabled()) {
+            onApplyButtonClick();
+        }
+    });
+
+    document.querySelector('#disconnect').addEventListener('click', function(event) {
+        onDisconnectButtonClick();
+    });
+
+    document.querySelector('#startSave').addEventListener('click', (event) => {
+        onStartSaveClick();
+    });
+
+    document.querySelector('#stopSave').addEventListener('click', (event) => {
+        onStopSaveClick();
+    });
+
+    document.querySelector('#clearSave').addEventListener('click', (event) => {
+        onClearSaveClick();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const code = event.keyCode;
+        
+        switch (code) {
+            case 32:
+                toggleSave();
+                break;
+        }
+
+    });
+
+    document.querySelector('#stopSave').disabled = true;
+
+    log('Initialized.');
 }

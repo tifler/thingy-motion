@@ -2,3 +2,28 @@ body {
     font-size: 10pt;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+div#leftPanel {
+    width: 1210px;
+};
+
+div#rightPanel {
+    position: relative;
+    left: 1210px;
+}
+
+div.divHolder {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+div.graphHolder {
+}
+
+div#divLog {
+
+}
+
+div#divData {
+}

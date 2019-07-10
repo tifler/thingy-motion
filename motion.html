@@ -6,147 +6,183 @@
     <link rel="stylesheet" type="text/css" href="css/default.css">
 </head>
 
-<body>
-    <button id='connectMotion'>Connect Motion RAW</button>
-    <button id='startNotifications' disabled>Start Notification</button>
-    <button id='stopNotifications' disabled>Stop Notification</button>
-    <button id='reset' disabled>Reset</button>
-    <br/>
+<body onload='initialize()'>
+    <div id='leftPanel'>
 
-    <table>
-        <tr>
-            <td>
-                Step Counter Interval
-            </td>
-            <td>
-                <input type=text id='stepCntItv'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Temperature Compensation Interval
-            </td>
-            <td>
-                <input type=text id='tempCompItv'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Magnetometer Compensation Interval
-            </td>
-            <td>
-                <input type=text id='magCompItv'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Motion Processing Unit Frequency
-            </td>
-            <td>
-                <input type=text id='motProcFreq'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Wake on Motion
-            </td>
-            <td>
-                <input type=text id='wakeOnMotion'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Apply changes
-            </td>
-            <td>
-                <button id='applyChange'>Apply changes</button>
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td></td>
-            <td>X</td>
-            <td>Y</td>
-            <td>Z</td>
-        </tr>
-        <tr>
-            <td>Accel</td>
-            <td>
-                <input type=text id='ax'/>
-            </td>
-            <td>
-                <input type=text id='ay'/>
-            </td>
-            <td>
-                <input type=text id='az'/>
-            </td>
-            <td>
-                <input type=text id='afps'/>
-            </td>
-        </tr>
-        <tr>
-            <td>Gyro</td>
-            <td>
-                <input type=text id='gx'/>
-            </td>
-            <td>
-                <input type=text id='gy'/>
-            </td>
-            <td>
-                <input type=text id='gz'/>
-            </td>
-            <td>
-                <input type=text id='gfps'/>
-            </td>            
-        </tr>
-        <tr>
-            <td>Compass</td>
-            <td>
-                <input type=text id='cx'/>
-            </td>
-            <td>
-                <input type=text id='cy'/>
-            </td>
-            <td>
-                <input type=text id='cz'/>
-            </td>
-            <td>
-                <input type=text id='cfps'/>
-            </td>
-        </tr>
-        <tr>
-            <td>Gravity Vector</td>
-            <td>
-                <input type=text id='vx'/>
-            </td>
-            <td>
-                <input type=text id='vy'/>
-            </td>
-            <td>
-                <input type=text id='vz'/>
-            </td>
-            <td>
-                <input type=text id='vfps'/>
-            </td>
-        </tr>
-    </table>
+        <div class='divOperaion'>
+            <button id='connectMotion'>Connect Motion RAW</button>
+            <button id='startNotifications' disabled>Start Notification</button>
+            <button id='stopNotifications' disabled>Stop Notification</button>
+            <button id='reset' disabled>Reset</button>
+            <button id='disconnect' disabled>Disconnect</button>
+        </div>
 
-    <canvas id="graphAX" width="400" height="100"></canvas>
-    <canvas id="graphAY" width="400" height="100"></canvas>
-    <canvas id="graphAZ" width="400" height="100"></canvas>
+        <div class='configHolder'>
+            <table>
+                <tr>
+                    <td>
+                        Step Counter Interval
+                    </td>
+                    <td>
+                        <input type=text id='stepCntItv'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Temperature Compensation Interval
+                    </td>
+                    <td>
+                        <input type=text id='tempCompItv'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Magnetometer Compensation Interval
+                    </td>
+                    <td>
+                        <input type=text id='magCompItv'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Motion Processing Unit Frequency
+                    </td>
+                    <td>
+                        <input type=text id='motProcFreq'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Wake on Motion
+                    </td>
+                    <td>
+                        <input type=text id='wakeOnMotion'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Apply changes
+                    </td>
+                    <td>
+                        <button id='applyChange'>Apply changes</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <canvas id="graphGX" width="400" height="100"></canvas>
-    <canvas id="graphGY" width="400" height="100"></canvas>
-    <canvas id="graphGZ" width="400" height="100"></canvas>
+        <div class='valTableHodler'>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>X</td>
+                    <td>Y</td>
+                    <td>Z</td>
+                </tr>
+                <tr>
+                    <td>Accel</td>
+                    <td>
+                        <input type=text id='ax'/>
+                    </td>
+                    <td>
+                        <input type=text id='ay'/>
+                    </td>
+                    <td>
+                        <input type=text id='az'/>
+                    </td>
+                    <td>
+                        <input type=text id='afps'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gyro</td>
+                    <td>
+                        <input type=text id='gx'/>
+                    </td>
+                    <td>
+                        <input type=text id='gy'/>
+                    </td>
+                    <td>
+                        <input type=text id='gz'/>
+                    </td>
+                    <td>
+                        <input type=text id='gfps'/>
+                    </td>            
+                </tr>
+                <tr>
+                    <td>Compass</td>
+                    <td>
+                        <input type=text id='cx'/>
+                    </td>
+                    <td>
+                        <input type=text id='cy'/>
+                    </td>
+                    <td>
+                        <input type=text id='cz'/>
+                    </td>
+                    <td>
+                        <input type=text id='cfps'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gravity Vector</td>
+                    <td>
+                        <input type=text id='vx'/>
+                    </td>
+                    <td>
+                        <input type=text id='vy'/>
+                    </td>
+                    <td>
+                        <input type=text id='vz'/>
+                    </td>
+                    <td>
+                        <input type=text id='vfps'/>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <canvas id="graphCX" width="400" height="100"></canvas>
-    <canvas id="graphCY" width="400" height="100"></canvas>
-    <canvas id="graphCZ" width="400" height="100"></canvas>
+        <div class='graphHolder'>
+            <canvas id="graphAX" width="400" height="100"></canvas>
+            <canvas id="graphAY" width="400" height="100"></canvas>
+            <canvas id="graphAZ" width="400" height="100"></canvas>
+        </div>
 
-    <canvas id="graphVX" width="400" height="100"></canvas>
-    <canvas id="graphVY" width="400" height="100"></canvas>
-    <canvas id="graphVZ" width="400" height="100"></canvas>
+        <div class='graphHolder'>
+            <canvas id="graphGX" width="400" height="100"></canvas>
+            <canvas id="graphGY" width="400" height="100"></canvas>
+            <canvas id="graphGZ" width="400" height="100"></canvas>
+        </div>
+
+        <div class='graphHolder'>
+            <canvas id="graphCX" width="400" height="100"></canvas>
+            <canvas id="graphCY" width="400" height="100"></canvas>
+            <canvas id="graphCZ" width="400" height="100"></canvas>
+        </div>
+
+        <div class='graphHolder'>
+            <canvas id="graphVX" width="400" height="100"></canvas>
+            <canvas id="graphVY" width="400" height="100"></canvas>
+            <canvas id="graphVZ" width="400" height="100"></canvas>
+        </div>
+
+    </div>
+
+    <div id='rightPanel'>
+        <div class='divHolder'>
+            <div id='divLog'>
+                    <textarea rows="20" cols="80" id='log'></textarea>
+            </div>
+            <div id='divData'>
+                <div id='divDataCtr'>
+                    <button id='startSave'>Start</button>
+                    <button id='stopSave'>Stop</button>
+                    <input type=text id='saveId' value=0></input>
+                    <button id='clearSave'>Clear</button>
+                </div>
+                <textarea rows="40" cols="80" id='data'></textarea>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Int 2^6 => -2^5 ~ 2^5
@@ -230,12 +266,14 @@
             lineAY.append(t, acc.y);
             lineAZ.append(t, acc.z);
         }
+
         function appendGyroData(gyro) {
             var t = new Date().getTime();
             lineGX.append(t, gyro.x);
             lineGY.append(t, gyro.y);
             lineGZ.append(t, gyro.z);
         }
+
         function appendCompassData(compass) {
             var t = new Date().getTime();
             lineCX.append(t, compass.x);
@@ -249,38 +287,5 @@
             lineVY.append(t, gravity.y);
             lineVZ.append(t, gravity.z);
         }
-    </script>
-
-    <script>
-        document.querySelector('#connectMotion').addEventListener('click', function() {
-            if (isWebBluetoothEnabled()) {
-                onConnectMotion();
-            }
-        });
-
-        document.querySelector('#startNotifications').addEventListener('click', function(event) {
-            if (isWebBluetoothEnabled()) {
-                onStartNotificationsButtonClick();
-            }
-        });
-
-        document.querySelector('#stopNotifications').addEventListener('click', function(event) {
-            if (isWebBluetoothEnabled()) {
-                onStopNotificationsButtonClick();
-            }
-        });
-
-        document.querySelector('#reset').addEventListener('click', function(event) {
-            if (isWebBluetoothEnabled()) {
-                // ChromeSamples.clearLog();
-                onResetButtonClick();
-            }
-        });
-
-        document.querySelector('#applyChange').addEventListener('click', function(event) {
-            if (isWebBluetoothEnabled()) {
-                onApplyButtonClick();
-            }
-        });
     </script>
 </body>
