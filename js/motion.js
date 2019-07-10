@@ -366,7 +366,7 @@ function onStopSaveClick() {
 }
 
 function onClearSaveClick() {
-
+    document.querySelector('#data').value = '';
 }
 
 function toggleSave() {
